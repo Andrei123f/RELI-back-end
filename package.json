@@ -1,0 +1,15 @@
+{
+  "name": "reli-back-end",
+  "version": "1.0.0",
+  "description": "The Back-end of RELI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrei123f@github",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "sqlite3": "^4.2.0"
+  }
+}
