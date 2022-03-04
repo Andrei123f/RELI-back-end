@@ -53,6 +53,6 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+app.listen(port || process.env.PORT, () => {
+  console.log(`Example app listening at http://localhost:${port|| process.env.PORT}`)
 });
