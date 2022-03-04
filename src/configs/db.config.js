@@ -1,6 +1,11 @@
+
+/*
 const env = process.env;
 const fs = require('fs');
+const envir = env.NODE_ENV || 'dev';
+
 const db = {
+    isProd: envir != 'dev',
     host: env.DB_HOST,
     user: env.DB_USER,
     password: env.DB_PASSWORD,
@@ -13,3 +18,4 @@ const db = {
 };
 
 module.exports = db;
+*/

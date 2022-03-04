@@ -1,6 +1,20 @@
-const db = require('./db.service');
+const MongoClient = require('./db.service');
 const helper = require('../utils/helper.util');
 const config = require('../configs/general.config');
+
+MongoClient.connect(async err => {
+  const collection = MongoClient.db("renderlingo").collection("users");
+
+  await collection.insertOne(
+    {
+      name: "Clara",
+      surname: "Perju"
+    }
+  )
+
+  MongoClient.close();
+})
+
 
 async function getMultiple(page = 1){
   const offset = helper.getOffset(page, config.listPerPage);

@@ -4,12 +4,21 @@
   "description": "The Back-end of RELI",
   "main": "index.js",
   "scripts": {
+    "devStart": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrei123f@github",
   "license": "ISC",
   "dependencies": {
+    "@betsol/detect-environment": "^1.0.2",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "sqlite3": "^4.2.0"
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.4.1",
+    "mongoose": "^6.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

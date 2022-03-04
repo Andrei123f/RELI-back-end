@@ -1,13 +1,6 @@
-const mysql = require('mysql2/promise');
-const dbConfig = require('../configs/db.config');
+require('dotenv').config();
+const connectionString = process.env.ATLAS_URI;
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const client = new MongoClient(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-async function query(sql, params) {
-  const connection = await mysql.createConnection(dbConfig);
-  const [results, ] = await connection.execute(sql, params);
-
-  return results;
-}
-
-module.exports = {
-  query
-}
+module.exports = client;
