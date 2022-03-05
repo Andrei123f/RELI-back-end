@@ -7,7 +7,6 @@
     "start": "node index.js",
     "devStart": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-
   },
   "author": "Andrei123f@github",
   "license": "ISC",
@@ -22,5 +21,16 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andrei123f/RELI-back-end.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Andrei123f/RELI-back-end/issues"
+  },
+  "homepage": "https://github.com/Andrei123f/RELI-back-end#readme"
 }
