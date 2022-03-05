@@ -51,6 +51,7 @@ async function createUser(req, res)
 async function loginUser(req, res)
  {
   try {
+    console.log(req);
     const validationResult = usersMiddleware.validateLoginUser(req.body);
     if(validationResult != true){
       res.json(validationResult);
