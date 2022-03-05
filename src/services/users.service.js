@@ -1,8 +1,9 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const util = require('../utils/helper.util');
 const connectionString = process.env.ATLAS_URI;
+const jwt = require('jsonwebtoken');
 const { MongoClient} = require('mongodb');
-
 
 async function create(userData){
   try{
@@ -10,25 +11,29 @@ async function create(userData){
       const db = connector.db("renderlingo");
       const collection = db.collection("users");
       const password = bcrypt.hashSync(userData.password, bcrypt.genSaltSync(parseInt(process.env.PASSWORD_SALT_ROUNDS)));
+      const accessToken = jwt.sign({username: userData.username}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_EXP_H});
+      const refreshToken = jwt.sign({username: userData.username}, process.env.REFERESH_TOKEN_SECERET, {expiresIn: process.env.REFRESH_TOKEN_EXP_M});
       await collection.insertOne(
         {
           username: userData.username,
           firstname: userData.firstname,
           surname: userData.surname,
           email: userData.email,
-          password: password
+          password: password,
+          refreshToken: {
+            token_value: refreshToken,
+            expires: util.getDateAfterMonths(1)
+          },
+          accessToken: {
+            token_value: accessToken,
+            expires: util.getDateAfterHours(1)
+          }
         }
       )
-      connector.close();
-      return {
-           result: 'SUCCESS',
-           message: 'User created successfully.'}
+      return true;
       }
       catch(err) {
-      return {
-        result: 'ERROR',
-        message: 'Unexpected Database Error. We cannot process your request right now.'
-      }   
+        throw err;  
   }        
 }
 
@@ -44,15 +49,12 @@ async function get(userData){
         username: userData.username
       }
     );
+    
     connector.close()
-
     return user;
     }
     catch(err) {
-      return {
-        result: 'ERROR',
-        message: 'Unexpected Database Error. We cannot process your request right now.'
-      }   
+      throw err;
   }        
 }
 
