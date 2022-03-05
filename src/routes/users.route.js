@@ -9,7 +9,7 @@ const default404 = require('./default404.routes');
 router.post('/register', usersController.createUser)
 
 /* POST user/login - login a user  */
-router.post('/login', usersController.loginUser)
+router.get('/login', usersController.loginUser)
 
 
 //default 404 behaviour
