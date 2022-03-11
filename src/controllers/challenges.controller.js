@@ -18,7 +18,7 @@ async function getStats(req, res) {
     const result = authMiddleware.validateAccessToken(token);
 
     if (!result) {
-      res.json({
+      res.status(403).json({
         result: "ERROR",
         message: "Access token has expired or is not valid.",
       });
@@ -72,10 +72,11 @@ async function evaluateSolution(req, res) {
     const result = authMiddleware.validateAccessToken(token);
 
     if (!result) {
-      res.json({
+      res.status(403).json({
         result: "ERROR",
         message: "Access token has expired or is not valid.",
       });
+
       return;
     }
 
