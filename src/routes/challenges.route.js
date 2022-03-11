@@ -8,6 +8,10 @@ const default404 = require('./default404.routes');
 /* GET challenge/getStats - to get all the data necessary for the graphs */
 router.get('/getStats', challengesController.getStats);
 
+/* POST challenge/evaluate - to get all the data necessary for the graphs */
+router.get('/evaluate', challengesController.evaluateSolution);
+
+
 //default 404 behaviour
 default404(router)
 

@@ -35,11 +35,14 @@ async function getStats(req, res) {
       return;
     }
 
-    const completedChallenges = await challengeServices.getAllByUsername(user.username);
+    const completedChallenges = await challengeServices.getAllByUsername(
+      user.username
+    );
 
     res.json({
       result: "SUCCESS",
-      message: "Successfully retrieved the stats of the challenges done by the user",
+      message:
+        "Successfully retrieved the stats of the challenges done by the user",
       challengeStats: completedChallenges,
     });
   } catch (err) {
@@ -55,6 +58,45 @@ async function getStats(req, res) {
   }
 }
 
+async function evaluateSolution(req, res) {
+  try {
+    const token = authMiddleware.getTokenFromReq(req);
+    if (token == null) {
+      res.json({
+        result: "ERROR",
+        message: "Access token not present in the headers.",
+      });
+      return;
+    }
+
+    const result = authMiddleware.validateAccessToken(token);
+
+    if (!result) {
+      res.json({
+        result: "ERROR",
+        message: "Access token has expired or is not valid.",
+      });
+      return;
+    }
+
+    res.json({
+      result: "SUCCESS",
+      message:
+        "Successfully evaluated the solution. Percentange of correctness: 15%",
+    });
+  } catch (err) {
+    console.error(
+      `Error while evaluating the solution of the user. Error message: `,
+      err.message
+    );
+    res.json({
+      result: "ERROR",
+      message:
+        "Unexpected database error. We cannot process your request right now.",
+    });
+  }
+}
 module.exports = {
   getStats,
+  evaluateSolution,
 };
