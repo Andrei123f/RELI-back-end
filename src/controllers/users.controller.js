@@ -59,6 +59,12 @@ async function loginUser(req, res) {
         res.json({
           result: "SUCCESS",
           message: "User successfully logged in.",
+          userDetatails:{
+            username: user.username,
+            firstname: user.firstname,
+            surname: user.surname,
+            email: user.email
+          },
           access_token: user.accessToken,
           refresh_token: user.refreshToken,
         });
