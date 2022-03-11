@@ -88,11 +88,9 @@ async function refreshAccessToken(username) {
     );
 
     const result = await collection.updateOne(
-      {"username": username},
-      {$set: {"accessToken.token_value": accessToken}}
+      { username: username },
+      { $set: { "accessToken.token_value": accessToken } }
     );
-    
-    console.log(result);
 
     connector.close();
     return accessToken;
@@ -105,5 +103,5 @@ module.exports = {
   create,
   get,
   getByAccessToken,
-  refreshAccessToken
+  refreshAccessToken,
 };
