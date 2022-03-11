@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 3200;
 const usersRouter = require('./src/routes/users.route');
 const challengesRouter = require('./src/routes/challenges.route');
+const authRouter = require('./src/routes/auth.route');
 
 const cors = require('cors')
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', usersRouter);
 app.use('/challenge', challengesRouter);
+app.use('/auth', authRouter);
 
 app.get('*', function(req, res){
   res.status(404).json

@@ -1,0 +1,15 @@
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/auth.controller');
+const default404 = require('./default404.routes');
+
+//create routers for each endpoint
+
+/* GET challenge/getStats - to get all the data necessary for the graphs */
+router.post('/refreshAccessToken', authController.refreshAccessToken);
+
+
+//default 404 behaviour
+default404(router)
+
+module.exports = router;

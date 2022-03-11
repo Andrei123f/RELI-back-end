@@ -14,7 +14,23 @@ function validateAccessToken(token) {
 
   return res;
 }
+
+function validateRefreshToken(token) {
+  let res = true;
+  jwt.verify(token, process.env.REFERESH_TOKEN_SECERET, (err, user) => {
+    if (err) res = false;
+  });
+
+  return res;
+}
+
+function getRefreshToken(req) {
+  return req.body.refresh_token ?? null;
+}
+
 module.exports = {
   getTokenFromReq,
   validateAccessToken,
+  validateRefreshToken,
+  getRefreshToken
 };

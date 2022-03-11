@@ -76,8 +76,34 @@ async function getByAccessToken(accessToken) {
   }
 }
 
+async function refreshAccessToken(username) {
+  try {
+    const connector = await MongoClient.connect(connectionString);
+    const db = connector.db("renderlingo");
+    const collection = db.collection("users");
+    const accessToken = jwt.sign(
+      { username: username },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: process.env.ACCESS_TOKEN_EXP_H }
+    );
+
+    const result = await collection.updateOne(
+      {"username": username},
+      {$set: {"accessToken.token_value": accessToken}}
+    );
+    
+    console.log(result);
+
+    connector.close();
+    return accessToken;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   create,
   get,
   getByAccessToken,
+  refreshAccessToken
 };
