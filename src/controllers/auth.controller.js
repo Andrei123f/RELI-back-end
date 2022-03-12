@@ -72,6 +72,45 @@ async function refreshAccessToken(req, res) {
   }
 }
 
+async function validateAccessToken(req, res) {
+  try {
+    const token = authMiddleware.getTokenFromReq(req);
+    if (token == null) {
+      res.json({
+        result: "ERROR",
+        message: "Access token not present in the headers.",
+      });
+      return;
+    }
+
+    const result = authMiddleware.validateAccessToken(token);
+
+    if (!result) {
+      res.status(403).json({
+        result: "ERROR",
+        message: "Access token has expired or is not valid.",
+      });
+      return;
+    }
+
+    res.json({
+      result: "SUCCESS",
+      message: "Access token is valid.",
+      access_token: access_token,
+    });
+  } catch (err) {
+    console.error(
+      `Error while validating the access token. Error message: `,
+      err.message
+    );
+    res.json({
+      result: "ERROR",
+      message:
+        "Unexpected database error. We cannot process your request right now.",
+    });
+  }
+}
 module.exports = {
   refreshAccessToken,
+  validateAccessToken
 };

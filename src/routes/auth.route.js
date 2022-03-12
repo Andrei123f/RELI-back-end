@@ -5,8 +5,11 @@ const default404 = require('./default404.routes');
 
 //create routers for each endpoint
 
-/* GET challenge/getStats - to get all the data necessary for the graphs */
+/* POST auth/refreshAccessToken - to refresh the access token */
 router.post('/refreshAccessToken', authController.refreshAccessToken);
+
+/* POST auth/validateAccessToken - to refresh the access token */
+router.post('/validateAccessToken', authController.validateAccessToken);
 
 
 //default 404 behaviour
