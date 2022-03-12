@@ -96,7 +96,6 @@ async function validateAccessToken(req, res) {
     res.json({
       result: "SUCCESS",
       message: "Access token is valid.",
-      access_token: access_token,
     });
   } catch (err) {
     console.error(
