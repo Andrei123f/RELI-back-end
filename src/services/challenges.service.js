@@ -12,7 +12,6 @@ async function getAllByUsername(username) {
     });
 
     const cc = await formatChallenges(challenges);
-    console.log(cc);
     connector.close();
     return cc;
   } catch (err) {
@@ -24,8 +23,8 @@ async function getAllDefault() {
   try {
     const connector = await MongoClient.connect(connectionString);
     const db = connector.db("renderlingo");
-    const collection = db.collection("defaultChallenges");
-    const defaultChallenges = await collection.find();
+    const collection = db.collection("defaultChapters");
+    const defaultChallenges = await collection.find({}).toArray();
     return defaultChallenges;
   } catch (err) {
     throw err;
@@ -36,7 +35,7 @@ async function getDefaultById(defaultChallengeId) {
   try {
     const connector = await MongoClient.connect(connectionString);
     const db = connector.db("renderlingo");
-    const collection = db.collection("defaultChallenges");
+    const collection = db.collection("defaultChapters");
     const defaultChallenge = await collection.find({
       id: defaultChallengeId,
     });
@@ -46,6 +45,20 @@ async function getDefaultById(defaultChallengeId) {
   }
 }
 
+async function insertNewUserChapters(userDetails, chapters) {
+  try {
+    const connector = await MongoClient.connect(connectionString);
+    const db = connector.db("renderlingo");
+    const collection = db.collection("challenges");
+    await collection.insertOne({
+      username: userDetails.username,
+      chapters: chapters,
+    });
+    return true;
+  } catch (err) {
+    throw err;
+  }
+}
 
 //TODO decide what statuses you are going to have for each challenge that will pe shown on the UI.
 async function formatChallenges(challenges) {
@@ -65,4 +78,5 @@ module.exports = {
   getAllByUsername,
   getAllDefault,
   getDefaultById,
+  insertNewUserChapters,
 };

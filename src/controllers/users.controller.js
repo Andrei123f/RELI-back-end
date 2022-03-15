@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 const usersServices = require("../services/users.service");
 const usersMiddleware = require("../middlewares/users.middleware");
+const challengeServices = require("../services/challenges.service");
 
 async function createUser(req, res) {
   try {
@@ -16,6 +17,15 @@ async function createUser(req, res) {
     if (user == null) {
       const result = await usersServices.create(req.body);
       if (result == true) {
+        const chapters = await challengeServices.getAllDefault();
+        const result = await challengeServices.insertNewUserChapters(req.body, chapters);
+        if(!result){
+          res.json({
+            result: "SUCCESS",
+            message: "User account created successfully, but could not insert challenges. Please contact the admin.",
+          });
+          return;
+        }
         res.json({
           result: "SUCCESS",
           message: "User account created successfully.",
