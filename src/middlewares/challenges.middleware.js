@@ -20,7 +20,7 @@ function validateEvaluateSolution(requestBody){
       };
     }
     //now validate if they have values or not
-    if (requestBody.key == "" || requestBody.key == {}) {
+    if (requestBody.key == "") {
       return {
         result: "ERROR",
         message: `Required field cannot be empty: ${key}.`,
