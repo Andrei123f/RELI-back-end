@@ -1,5 +1,6 @@
 const syntaxValidator = require("esprima");
 const stringComparison = require("string-comparison");
+const fs = require('fs');
 
 function validateSyntax(code) {
   try {
@@ -15,11 +16,14 @@ function validateSyntax(code) {
 }
 
 //util for detecting the similarity between our solution and user's solution
-function detectSim(code, challenge_name) {
+function detectSim(code, chapter_code, challenge_code) {
   try {
-    const ourSolCode = "";
-    const ourSolAST = syntaxValidator.parseScript(ourSolCode);
-    const userSolAST = syntaxValidator.parseScript(code);
+    //first get our solution code
+    const path = __dirname + `/../configs/ChallengeSolutions/Chapter${chapter_code}/Challenge${challenge_code}.sol.js`;
+    const ourSolCode = fs.readFileSync(path, 'utf-8');
+
+    const ourSolAST = JSON.stringify(syntaxValidator.parseScript(ourSolCode));
+    const userSolAST = JSON.stringify(syntaxValidator.parseScript(code));
 
     //now run a couple of possible distance comparison algorithms and calculate an average
 
@@ -57,33 +61,12 @@ function detectSim(code, challenge_name) {
 
 //util for performing unit tests on the user's solution
 function unitTest(code, bindings, chapter, challenge) {
-  code =
-    'console.log("hello from the code"); console.log("This should show as 5: " +  this.bindings.andrei)';
-  bindings = { andrei: 5 };
 
-  let ValidatorTests = null;
-  switch (chapter) {
-    case 1:
-      const Chapter1Tests = require("../../test/challengesValidators/Chapter1.tests");
-      switch (challenge) {
-        case 1:
-          ValidatorTests = new Chapter1Tests.Challenge1Test(code, bindings);
-          break;
-        case 2:
-          ValidatorTests = new Chapter1Tests.Challenge2Test(code, bindings);
-          break;
-        case 3:
-          ValidatorTests = new Chapter1Tests.Challenge3Test(code, bindings);
-          break;
-        case 4:
-          ValidatorTests = new Chapter1Tests.Challenge4Test(code, bindings);
-          break;
-        case 5:
-          ValidatorTests = new Chapter1Tests.Challenge5Test(code, bindings);
-          break;
-      }
-  }
-  ValidatorTests.test();
+  const ChapterTests = require(`../../test/challengesValidators/Chapter${chapter}.tests`);
+  const ChallengeTests = new ChapterTests[`Challenge${challenge}Test`](code, bindings)
+
+  ChallengeTests.setBindings();
+  ChallengeTests.runTests();
 }
 
 module.exports = {

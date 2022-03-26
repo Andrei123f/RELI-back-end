@@ -3,7 +3,7 @@ const challengeServices = require("../services/challenges.service");
 const usersServices = require("../services/users.service");
 const challengesMiddleware = require("../middlewares/challenges.middleware");
 const authMiddleware = require("../middlewares/auth.middleware");
-
+const challengeValidator = require("../utils/validateChallenge.util");
 async function getStats(req, res) {
   try {
     const token = authMiddleware.getTokenFromReq(req);
@@ -69,9 +69,9 @@ async function evaluateSolution(req, res) {
       return;
     }
 
-    const result = authMiddleware.validateAccessToken(token);
+    const resAccess = authMiddleware.validateAccessToken(token);
 
-    if (!result) {
+    if (!resAccess) {
       res.status(403).json({
         result: "ERROR",
         message: "Access token has expired or is not valid.",
@@ -79,6 +79,56 @@ async function evaluateSolution(req, res) {
 
       return;
     }
+
+    //check if we have all the fields present
+    const resReq = challengesMiddleware.validateEvaluateSolution(req.body);
+
+    if (resReq != true) {
+      res.json({ resReq });
+      return;
+    }
+
+    const chapter_code = req.body.chapter_code;
+    const challenge_code = req.body.challenge_code;
+    const code = req.body.code;
+    const bindings = req.body.bindings;
+
+    //do another syntax check
+    const syntaxCheck = challengeValidator.validateSyntax(code);
+    //if syntax is not valid, return error
+    if (!syntaxCheck.result) {
+      res.json({
+        result: "ERROR",
+        message: `Syntax error. Please check you code. ${syntaxCheck.errMsg}`,
+      });
+      return;
+    }
+
+    //calculate p1 that is the similarity between our solution and user's solution
+    const simRes = challengeValidator.detectSim(
+      code,
+      chapter_code,
+      challenge_code
+    );
+
+    if (!simRes.result) {
+      res.json({
+        result: "ERROR",
+        message: "Something went wrong. Please try again.",
+      });
+      return;
+    }
+
+    const p1 = simRes.similarity;
+
+    //now perform the unit tests on the code submitted by the user. this would be the p2
+    //code, bindings, chapter, challenge
+    const unitTestRes = challengeValidator.unitTest(
+      code,
+      bindings,
+      chapter_code,
+      challenge_code
+    );
 
     res.json({
       result: "SUCCESS",
