@@ -18,6 +18,10 @@ class defaultTest {
   }
 
   setPerc() {
+    if(this.testsPassedN == 0){
+      this.percPass = 0;
+      return;
+    };
     this.percPass = (this.testsN / this.testsPassedN) * 100;
   }
 

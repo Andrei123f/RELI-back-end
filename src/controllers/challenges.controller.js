@@ -36,9 +36,7 @@ async function getStats(req, res) {
       return;
     }
 
-    const chapters = await challengeServices.getAllByUsername(
-      user.username
-    );
+    const chapters = await challengeServices.getAllByUsername(user.username);
 
     res.json({
       result: "SUCCESS",
@@ -143,9 +141,9 @@ async function evaluateSolution(req, res) {
     const C = (20 / 100) * p1 + (80 / 100) * p2;
 
     //if C > 80 then the answer is considered as correct
+    const user = await usersServices.getByAccessToken(token);
+    let chaptersData = await challengeServices.getChaptersByUsername(user);
     if (C > 80) {
-      const user = await usersServices.getByAccessToken(token);
-      let chaptersData = await challengeServices.getChaptersByUsername(user);
       const challenge =
         chaptersData.chapters[chapter_code - 1].challenges[challenge_code - 1];
 
@@ -192,6 +190,8 @@ async function evaluateSolution(req, res) {
             res.json({
               result: "SUCCESS",
               message: `The answer is valid.`,
+              chapter_code: chapter_code,
+              challenge_code: challenge_code,
               C: C,
               p1: p1,
               p2: p2,
@@ -205,6 +205,8 @@ async function evaluateSolution(req, res) {
         res.json({
           result: "SUCCESS",
           message: `The answer is valid. But this challenge already has a better answer with a higher percentage of correctness: ${challenge.C}`,
+          chapter_code: chapter_code,
+          challenge_code: challenge_code,
           C: C,
           p1: p1,
           p2: p2,
@@ -227,10 +229,31 @@ async function evaluateSolution(req, res) {
           tests_failed: testFailedStack,
         }
       );
+      //set the current challenge to incomplete
+      chaptersData.chapters[chapter_code - 1].challenges[
+        challenge_code - 1
+      ].completed = false;
+      //calculate the new percentage of the chapter
+      let s = 0;
+      for (const chalId in chaptersData.chapters[chapter_code - 1].challenges) {
+        s += chaptersData.chapters[chapter_code - 1].challenges[chalId]
+          .completed
+          ? 1
+          : 0;
+      }
+      const newP =
+        (s / chaptersData.chapters[chapter_code - 1].challenges.length) * 100;
+      const resupchap = await challengeServices.updatePercOfChapter(
+        chapter_code,
+        user,
+        newP
+      );
       res.json({
         result: "ERROR",
         message:
           "The answer is not valid. The percentage of correctness must be at least 80%.",
+        chapter_code: chapter_code,
+        challenge_code: challenge_code,
         C: C,
         p1: p1,
         p2: p2,
