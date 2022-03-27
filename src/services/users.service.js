@@ -39,6 +39,7 @@ async function create(userData) {
         expires: util.getDateAfterHours(1),
       },
     });
+    connector.close();
     return true;
   } catch (err) {
     throw err;

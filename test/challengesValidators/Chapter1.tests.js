@@ -1,5 +1,8 @@
 const d = require("./defaultTest");
 class Challenge1 extends d.defaultTest {
+  //variables/functions available for this chapter only
+  _chapter_title = "Chapter 1";
+
   constructor(challenge, code, bindings) {
     super(1, challenge, code, bindings);
   }
@@ -8,10 +11,11 @@ class Challenge1 extends d.defaultTest {
 class Challenge1Test extends Challenge1 {
   //variables/functions available for this challenge only
   _haveLove = true;
-  _happy(){
+  _happy() {
     return true;
   }
-  
+  _challenge_title = "Challenge 1";
+
   //common functions
   constructor(code, bindings) {
     super(1, code, bindings);
@@ -24,30 +28,45 @@ class Challenge1Test extends Challenge1 {
 
   //common function, but customised tests
   runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 2;
+
     //binding the class variables to the function variables so we can test
     let haveLove = this._haveLove;
     let happy = () => this._happy();
 
-    let title = "Chapter 1 Challenge 1"; 
-    let p1 = "You should be happy if you have love";
-    let p2 = "You should not be happy if you do not have love";
-
+    let challengeMsg = "You should be happy if you have love.";
     //havelove is true
     let result = eval(this.code);
-    if(result == true){
-      console.log("test passed! " + p1)
-    } else{
-      console.log("test failed! " + p1);
+    if (result == true) {
+      this.pushTestPassed({
+        msg: `${challengeMsg}: Passed!`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } else {
+      this.pushTestFailed({
+        msg: `${challengeMsg}: Failed!`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
     }
 
+    challengeMsg = "You should not be happy if you do not have love.";
     //haveLove is false
     haveLove = false;
     result = eval(this.code);
-    if(result == true){
-      console.log("test failed!" + p2)
-    } else{
-      console.log("test passed!" + p2);
+    if (result == true) {
+      this.pushTestFailed({
+        msg: `${challengeMsg}: Failed!`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } else {
+      this.pushTestPassed({
+        msg: `${challengeMsg}: Passed!`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
     }
+
+    // ... more tests...
   }
 }
 

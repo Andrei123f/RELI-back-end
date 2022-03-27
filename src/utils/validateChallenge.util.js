@@ -1,6 +1,6 @@
 const syntaxValidator = require("esprima");
 const stringComparison = require("string-comparison");
-const fs = require('fs');
+const fs = require("fs");
 
 function validateSyntax(code) {
   try {
@@ -19,8 +19,10 @@ function validateSyntax(code) {
 function detectSim(code, chapter_code, challenge_code) {
   try {
     //first get our solution code
-    const path = __dirname + `/../configs/ChallengeSolutions/Chapter${chapter_code}/Challenge${challenge_code}.sol.js`;
-    const ourSolCode = fs.readFileSync(path, 'utf-8');
+    const path =
+      __dirname +
+      `/../configs/ChallengeSolutions/Chapter${chapter_code}/Challenge${challenge_code}.sol.js`;
+    const ourSolCode = fs.readFileSync(path, "utf-8");
 
     const ourSolAST = JSON.stringify(syntaxValidator.parseScript(ourSolCode));
     const userSolAST = JSON.stringify(syntaxValidator.parseScript(code));
@@ -47,7 +49,7 @@ function detectSim(code, chapter_code, challenge_code) {
 
     //for now every one is equal :)
 
-    S = (LevnDResult + LCSDResult + MLCSResult + CosineResult) / 4;
+    S = ((LevnDResult + LCSDResult + MLCSResult + CosineResult) / 4) * 100; //* 100 to get values from 0 to 100.
 
     return { similarity: S, result: true };
   } catch (e) {
@@ -61,12 +63,20 @@ function detectSim(code, chapter_code, challenge_code) {
 
 //util for performing unit tests on the user's solution
 function unitTest(code, bindings, chapter, challenge) {
-
   const ChapterTests = require(`../../test/challengesValidators/Chapter${chapter}.tests`);
-  const ChallengeTests = new ChapterTests[`Challenge${challenge}Test`](code, bindings)
+  const ChallengeTests = new ChapterTests[`Challenge${challenge}Test`](
+    code,
+    bindings
+  );
 
   ChallengeTests.setBindings();
   ChallengeTests.runTests();
+  ChallengeTests.setPerc();
+  return {
+    perc: ChallengeTests.getPerc(),
+    testFailedStack: ChallengeTests.getTestFailedStack(),
+    testPassedStack: ChallengeTests.getTestPassedStack(),
+  };
 }
 
 module.exports = {
