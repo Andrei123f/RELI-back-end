@@ -7,13 +7,12 @@ async function getAllByUsername(username) {
     const connector = await MongoClient.connect(connectionString);
     const db = connector.db("renderlingo");
     const collection = db.collection("challenges");
-    const challenges = await collection.find({
+    const chapters = await collection.find({
       username: username,
-    });
+    }).toArray();
 
-    const cc = await formatChallenges(challenges);
     connector.close();
-    return cc;
+    return chapters;
   } catch (err) {
     throw err;
   }

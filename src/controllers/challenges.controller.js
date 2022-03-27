@@ -4,6 +4,7 @@ const usersServices = require("../services/users.service");
 const challengesMiddleware = require("../middlewares/challenges.middleware");
 const authMiddleware = require("../middlewares/auth.middleware");
 const challengeValidator = require("../utils/validateChallenge.util");
+
 async function getStats(req, res) {
   try {
     const token = authMiddleware.getTokenFromReq(req);
@@ -35,7 +36,7 @@ async function getStats(req, res) {
       return;
     }
 
-    const completedChallenges = await challengeServices.getAllByUsername(
+    const chapters = await challengeServices.getAllByUsername(
       user.username
     );
 
@@ -43,13 +44,14 @@ async function getStats(req, res) {
       result: "SUCCESS",
       message:
         "Successfully retrieved the stats of the challenges done by the user",
-      challengeStats: completedChallenges,
+      chaptersData: chapters,
     });
   } catch (err) {
     console.error(
       `Error while getting the stats of the user. Error message: `,
       err.message
     );
+    console.log(err);
     res.json({
       result: "ERROR",
       message:
@@ -248,7 +250,170 @@ async function evaluateSolution(req, res) {
     });
   }
 }
+
+async function getNextChallenge(req, res) {
+  try {
+    const token = authMiddleware.getTokenFromReq(req);
+    if (token == null) {
+      res.json({
+        result: "ERROR",
+        message: "Access token not present in the headers.",
+      });
+      return;
+    }
+
+    const result = authMiddleware.validateAccessToken(token);
+
+    if (!result) {
+      res.status(403).json({
+        result: "ERROR",
+        message: "Access token has expired or is not valid.",
+      });
+      return;
+    }
+
+    const user = await usersServices.getByAccessToken(token);
+
+    if (!user) {
+      res.json({
+        result: "ERROR",
+        message: "User could not be found by that access token.",
+      });
+      return;
+    }
+
+    const chaptersData = await challengeServices.getChaptersByUsername(user);
+    let chapter_id = 0;
+    let challenge_id = 0;
+
+    for (const chapterId in chaptersData.chapters) {
+      if (chaptersData.chapters[chapterId].perc_done != 100) {
+        chapter_id = parseInt(chapterId) + 1; //the loop starts from 0
+        break;
+      }
+    }
+
+    if (chapter_id == 0) {
+      res.json({
+        result: "SUCCESS",
+        challengeDetails: false,
+        message:
+          "User has completed all the chapters. No more chapters available.",
+      });
+      return;
+    }
+
+    for (const chalId in chaptersData.chapters[chapter_id - 1].challenges) {
+      if (!chaptersData.chapters[chapter_id - 1].challenges[chalId].completed) {
+        challenge_id = parseInt(chalId) + 1;
+        break;
+      }
+    }
+    const challengeData =
+      chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1];
+    res.json({
+      result: "SUCCESS",
+      chapter_id: chapter_id,
+      challenge_id: challenge_id,
+      challengeDetails: challengeData,
+      message: "Successfully retrieved the next challenge.",
+    });
+  } catch (err) {
+    console.error(
+      `Error while getting the the next challenge for the user. Error message: `,
+      err.message
+    );
+    console.log(err);
+    res.json({
+      result: "ERROR",
+      message:
+        "Unexpected database error. We cannot process your request right now.",
+    });
+  }
+}
+
+async function getChallengeById(req, res) {
+  try {
+    const token = authMiddleware.getTokenFromReq(req);
+    if (token == null) {
+      res.json({
+        result: "ERROR",
+        message: "Access token not present in the headers.",
+      });
+      return;
+    }
+
+    const result = authMiddleware.validateAccessToken(token);
+
+    if (!result) {
+      res.status(403).json({
+        result: "ERROR",
+        message: "Access token has expired or is not valid.",
+      });
+      return;
+    }
+
+    const user = await usersServices.getByAccessToken(token);
+
+    if (!user) {
+      res.json({
+        result: "ERROR",
+        message: "User could not be found by that access token.",
+      });
+      return;
+    }
+
+    //check if we have all the fields present
+    const resReq = challengesMiddleware.validateGetById(req.body);
+
+    if (resReq != true) {
+      res.json({ resReq });
+      return;
+    }
+
+    const chapter_id = req.body.chapter_code;
+    const challenge_id = req.body.chapter_code;
+
+    const chaptersData = await challengeServices.getChaptersByUsername(user);
+
+    const challengeData =
+      chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1] ?? {};
+
+    if (
+      chaptersData.chapters[chapter_id - 1] &&
+      chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1]
+    ) {
+      const challengeData =
+        chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1];
+      res.json({
+        result: "SUCCESS",
+        chapter_id: chapter_id,
+        challenge_id: challenge_id,
+        challengeDetails: challengeData,
+        message: "Successfully retrieved the challenge.",
+      });
+    } else {
+      res.json({
+        result: "ERROR",
+        message: "Chapter id and/or challenge id are wrong.",
+      });
+    }
+  } catch (err) {
+    console.error(
+      `Error while getting the the next challenge for the user. Error message: `,
+      err.message
+    );
+    console.log(err);
+    res.json({
+      result: "ERROR",
+      message:
+        "Unexpected database error. We cannot process your request right now.",
+    });
+  }
+}
 module.exports = {
   getStats,
   evaluateSolution,
+  getNextChallenge,
+  getChallengeById,
 };
