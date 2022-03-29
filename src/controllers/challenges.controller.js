@@ -316,10 +316,14 @@ async function getNextChallenge(req, res) {
       }
     }
 
+    //if the user has completed all chapters just return the last challenge from the last chapter
     if (chapter_id == 0) {
       res.json({
         result: "SUCCESS",
-        challengeDetails: false,
+        chapter_id: chaptersData.chapters.length,
+        challenge_id: chaptersData.chapters[chaptersData.chapters.length - 1].challenges.length,
+        challengeDetails:
+          chaptersData.chapters[chaptersData.chapters.length - 1].challenges[chaptersData.chapters[chaptersData.chapters.length - 1].challenges.length - 1],
         message:
           "User has completed all the chapters. No more chapters available.",
       });
