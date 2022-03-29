@@ -22,7 +22,7 @@ class defaultTest {
       this.percPass = 0;
       return;
     };
-    this.percPass = (this.testsN / this.testsPassedN) * 100;
+    this.percPass = (this.testsPassedN / this.testsN) * 100;
   }
 
   //e: {msg: '', title: ''}
