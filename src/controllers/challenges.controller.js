@@ -329,7 +329,12 @@ async function getNextChallenge(req, res) {
             chaptersData.chapters[chaptersData.chapters.length - 1].challenges
               .length - 1
           ],
-        chapterDetails: chapterData,
+        chapterDetails: {
+          chapter_id: chapterData.chapter_id,
+          chapter_name: chapterData.chapter_name,
+          chapter_description: chapterData.chapter_description,
+          perc_done: chapterData.perc_done,
+        },
 
         message:
           "User has completed all the chapters. No more chapters available.",
@@ -350,7 +355,12 @@ async function getNextChallenge(req, res) {
       chapter_id: chapter_id,
       challenge_id: challenge_id,
       challengeDetails: challengeData,
-      chapterDetails: chapterData,
+      chapterDetails: {
+        chapter_id: chapterData.chapter_id,
+        chapter_name: chapterData.chapter_name,
+        chapter_description: chapterData.chapter_description,
+        perc_done: chapterData.perc_done,
+      },
       message: "Successfully retrieved the next challenge.",
     });
   } catch (err) {
@@ -425,7 +435,12 @@ async function getChallengeById(req, res) {
         chapter_id: chapter_id,
         challenge_id: challenge_id,
         challengeDetails: challengeData,
-        chapterDetails: chapterData,
+        chapterDetails: {
+          chapter_id: chapterData.chapter_id,
+          chapter_name: chapterData.chapter_name,
+          chapter_description: chapterData.chapter_description,
+          perc_done: chapterData.perc_done,
+        },
         message: "Successfully retrieved the challenge.",
       });
     } else {
