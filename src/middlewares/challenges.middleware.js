@@ -1,7 +1,7 @@
 function validateGetStats(req) {}
 
 function validateEvaluateSolution(requestBody) {
-  let requiredFields = ["code", "chapter_code", "challenge_code", "bindings"];
+  let requiredFields = ["code", "chapter_code", "challenge_code", "bindings", "solution_shown"];
 
   for (i in requiredFields) {
     key = requiredFields[i];

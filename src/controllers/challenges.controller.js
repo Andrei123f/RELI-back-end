@@ -92,6 +92,7 @@ async function evaluateSolution(req, res) {
     const challenge_code = req.body.challenge_code;
     const code = req.body.code;
     const bindings = req.body.bindings;
+    const solution_shown = req.body.solution_shown;
 
     //do another syntax check
     const syntaxCheck = challengeValidator.validateSyntax(code);
@@ -161,6 +162,7 @@ async function evaluateSolution(req, res) {
             user_answer: code,
             tests_passed: testPassedStack,
             tests_failed: testFailedStack,
+            solution_shown: solution_shown
           }
         );
 
@@ -197,6 +199,7 @@ async function evaluateSolution(req, res) {
               p2: p2,
               testFailedStack: testFailedStack,
               testPassedStack: testPassedStack,
+              solution_shown: solution_shown,
             });
             return;
           }
@@ -227,6 +230,7 @@ async function evaluateSolution(req, res) {
           user_answer: code,
           tests_passed: testPassedStack,
           tests_failed: testFailedStack,
+          solution_shown: solution_shown
         }
       );
       //set the current challenge to incomplete

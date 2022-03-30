@@ -7,9 +7,11 @@ async function getAllByUsername(username) {
     const connector = await MongoClient.connect(connectionString);
     const db = connector.db("renderlingo");
     const collection = db.collection("challenges");
-    let chapters = await collection.find({
-      username: username,
-    }).toArray();
+    let chapters = await collection
+      .find({
+        username: username,
+      })
+      .toArray();
 
     connector.close();
     chapters = chapters[0];
@@ -100,6 +102,8 @@ async function updateChallengeById(
             updateData.p1,
           "chapters.$[updateChapter].challenges.$[updateChallenge].p2":
             updateData.p2,
+          "chapters.$[updateChapter].challenges.$[updateChallenge].solution_shown":
+            updateData.solution_shown,
           "chapters.$[updateChapter].challenges.$[updateChallenge].user_answer":
             updateData.user_answer,
           "chapters.$[updateChapter].challenges.$[updateChallenge].tests_passed":
