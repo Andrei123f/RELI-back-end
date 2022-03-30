@@ -18,10 +18,10 @@ class defaultTest {
   }
 
   setPerc() {
-    if(this.testsPassedN == 0){
+    if (this.testsPassedN == 0) {
       this.percPass = 0;
       return;
-    };
+    }
     this.percPass = (this.testsPassedN / this.testsN) * 100;
   }
 
@@ -48,6 +48,10 @@ class defaultTest {
 
   getTestPassedStack() {
     return this.testsPassedStack;
+  }
+  //tests
+  parseVariableExistence(var_name) {
+    return `function test(){${this.code}; return typeof ${var_name} !== 'undefined' ? ${var_name} : undefined;} test();`;
   }
 }
 module.exports = {

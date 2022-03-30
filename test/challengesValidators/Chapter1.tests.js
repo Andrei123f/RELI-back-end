@@ -1,7 +1,7 @@
 const d = require("./defaultTest");
 class Challenge1 extends d.defaultTest {
   //variables/functions available for this chapter only
-  _chapter_title = "Chapter 1";
+  _chapter_title = "Variables";
 
   constructor(challenge, code, bindings) {
     super(1, challenge, code, bindings);
@@ -10,11 +10,7 @@ class Challenge1 extends d.defaultTest {
 
 class Challenge1Test extends Challenge1 {
   //variables/functions available for this challenge only
-  _haveLove = true;
-  _happy() {
-    return true;
-  }
-  _challenge_title = "Challenge 1";
+  _challenge_title = "Define a variable";
 
   //common functions
   constructor(code, bindings) {
@@ -32,41 +28,40 @@ class Challenge1Test extends Challenge1 {
     this.testsN = 2;
 
     //binding the class variables to the function variables so we can test
-    let haveLove = this._haveLove;
-    let happy = () => this._happy();
+    //let haveLove = this._haveLove;
+    //let happy = () => this._happy();
 
-    let challengeMsg = "You should be happy if you have love.";
+    let challengeMsg = "Variable money should be defined.";
+    let s = this.parseVariableExistence("money");
     //havelove is true
-    let result = eval(this.code);
-    if (result == true) {
-      this.pushTestPassed({
-        msg: `${challengeMsg}: Passed!`,
-        title: `${this._chapter_title}: ${this._challenge_title}`,
-      });
-    } else {
-      this.pushTestFailed({
-        msg: `${challengeMsg}: Failed!`,
-        title: `${this._chapter_title}: ${this._challenge_title}`,
-      });
-    }
+    let result = eval(s);
 
-    challengeMsg = "You should not be happy if you do not have love.";
-    //haveLove is false
-    haveLove = false;
-    result = eval(this.code);
-    if (result == true) {
+    //check if the variable is defined
+    if (result === undefined) {
       this.pushTestFailed({
-        msg: `${challengeMsg}: Failed!`,
+        msg: `${challengeMsg}`,
         title: `${this._chapter_title}: ${this._challenge_title}`,
       });
     } else {
       this.pushTestPassed({
-        msg: `${challengeMsg}: Passed!`,
+        msg: `${challengeMsg}`,
         title: `${this._chapter_title}: ${this._challenge_title}`,
       });
     }
 
-    // ... more tests...
+    //check if we have at least 50 pounds
+    challengeMsg = "You should have 50 pounds in the wallet";
+    if (result == 50) {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } else {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
   }
 }
 
