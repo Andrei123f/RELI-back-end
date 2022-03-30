@@ -315,15 +315,22 @@ async function getNextChallenge(req, res) {
         break;
       }
     }
-
+    const chapterData = chaptersData.chapters[chapter_id - 1];
     //if the user has completed all chapters just return the last challenge from the last chapter
     if (chapter_id == 0) {
       res.json({
         result: "SUCCESS",
         chapter_id: chaptersData.chapters.length,
-        challenge_id: chaptersData.chapters[chaptersData.chapters.length - 1].challenges.length,
+        challenge_id:
+          chaptersData.chapters[chaptersData.chapters.length - 1].challenges
+            .length,
         challengeDetails:
-          chaptersData.chapters[chaptersData.chapters.length - 1].challenges[chaptersData.chapters[chaptersData.chapters.length - 1].challenges.length - 1],
+          chaptersData.chapters[chaptersData.chapters.length - 1].challenges[
+            chaptersData.chapters[chaptersData.chapters.length - 1].challenges
+              .length - 1
+          ],
+        chapterDetails: chapterData,
+
         message:
           "User has completed all the chapters. No more chapters available.",
       });
@@ -343,6 +350,7 @@ async function getNextChallenge(req, res) {
       chapter_id: chapter_id,
       challenge_id: challenge_id,
       challengeDetails: challengeData,
+      chapterDetails: chapterData,
       message: "Successfully retrieved the next challenge.",
     });
   } catch (err) {
@@ -403,20 +411,21 @@ async function getChallengeById(req, res) {
 
     const chaptersData = await challengeServices.getChaptersByUsername(user);
 
-    const challengeData =
-      chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1] ?? {};
-
     if (
       chaptersData.chapters[chapter_id - 1] &&
       chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1]
     ) {
       const challengeData =
-        chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1];
+        chaptersData.chapters[chapter_id - 1].challenges[challenge_id - 1] ??
+        {};
+      const chapterData = chaptersData.chapters[chapter_id - 1] ?? {};
+
       res.json({
         result: "SUCCESS",
         chapter_id: chapter_id,
         challenge_id: challenge_id,
         challengeDetails: challengeData,
+        chapterDetails: chapterData,
         message: "Successfully retrieved the challenge.",
       });
     } else {
