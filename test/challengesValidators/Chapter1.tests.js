@@ -149,8 +149,8 @@ class Challenge3Test extends Chapter1 {
     let varsAlreadyDeclared = false;
 
     let challengeMsg = "Variables buyFood and haveFood should not be defined.";
-    let s1 = this.parseDeclaredVariableExistence("buyFood");
-    s1 = this.parseDeclaredVariableExistence("haveFood");
+    this.code_test_str =  this.parseDeclaredVariableExistence("buyFood");
+    let s1 = this.parseDeclaredVariableExistence("haveFood");
     //buyFood and haveFood should be undefined
     try {
       eval(s1);
