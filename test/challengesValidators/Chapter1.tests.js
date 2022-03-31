@@ -166,17 +166,16 @@ class Challenge3Test extends Chapter1 {
       });
     }
 
-    //now set the bindings
-    this.code_test_str = "";
-    this.code_test_str = this.parseInsertVariableExistence(
-      "buyFood",
-      "this._buyFood()"
-    );
-    haveFood = true;
-    let s2 = this.parseInsertVariableExistence("haveFood", haveFood);
-
     //if vars are already declared there is no point in running the code to crash the server
     if (!varsAlreadyDeclared) {
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "buyFood",
+        "this._buyFood()"
+      );
+      haveFood = true;
+      let s2 = this.parseInsertVariableExistence("haveFood", haveFood);
       //buyFood should be true
       challengeMsg = "You should not buy food if you have food.";
       let result2 = eval(s2);
@@ -219,7 +218,180 @@ class Challenge3Test extends Chapter1 {
   }
 }
 
-class Challenge4Test extends Chapter1 {}
+class Challenge4Test extends Chapter1 {
+  //variables/functions available for this challenge only
+  _challenge_title = "Short-circuiting and Else";
+
+  _callParents() {
+    return "parents_called";
+  }
+
+  _goToSupermarket() {
+    return "supermarket_gone";
+  }
+
+  //common functions
+  constructor(code, bindings) {
+    super(4, code, bindings);
+  }
+  setBindings() {
+    Object.keys(this.bindings).forEach((key) => {
+      this[key] = this.bindings[key];
+    });
+  }
+
+  //common function, but customised tests
+  runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 4;
+    let haveMoney;
+    let tooFar;
+    let varsAlreadyDeclared = false;
+
+    let challengeMsg =
+      "Variables haveMoney, tooFar, callParents and goToSupermarket should not be defined.";
+    this.code_test_str = this.parseDeclaredVariableExistence("tooFar");
+    this.code_test_str = this.parseDeclaredVariableExistence("haveMoney");
+    this.code_test_str = this.parseDeclaredVariableExistence("callParents");
+    let s1 = this.parseDeclaredVariableExistence("goToSupermarket");
+    //haveMoney, tooFar, callParents and goToSupermarket should be undefined
+    try {
+      eval(s1);
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } catch (e) {
+      varsAlreadyDeclared = true;
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    //if vars are already declared there is no point in running the code to crash the server
+    if (!varsAlreadyDeclared) {
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "callParents",
+        "this._callParents()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "goToSupermarket",
+        "this._goToSupermarket()"
+      );
+
+      //have money is true and too far is true, so we need to call parents
+      haveMoney = true;
+      tooFar = true;
+      this.code_test_str = this.parseInsertVariableExistence(
+        "haveMoney",
+        haveMoney
+      );
+      let s2 = this.parseInsertVariableExistence("tooFar", tooFar);
+
+      //we should call our parents
+      challengeMsg =
+        "You should call your parents if you have money and the supermarket is too far.";
+      let result2 = eval(s2);
+      if (result2 == "parents_called") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg} Your soulution ${
+            result2 == undefined
+              ? "has some logical issues."
+              : "said that we should go to the supermarket"
+          }`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "callParents",
+        "this._callParents()"
+      );
+      this.code_test_str = this.parseInsertVariableExistence(
+        "goToSupermarket",
+        "this._goToSupermarket()"
+      );
+
+      //have money is true and too far is false, so we need go to the supermarket
+      haveMoney = true;
+      tooFar = false;
+      this.code_test_str = this.parseInsertVariableExistence(
+        "haveMoney",
+        haveMoney
+      );
+      let s3 = this.parseInsertVariableExistence("tooFar", tooFar);
+      //we should go to the supermarket
+      challengeMsg =
+        "You should go to the supermarket if you have money and the supermarket is not too far.";
+      let resul3 = eval(s3);
+      if (resul3 == "supermarket_gone") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg} Your soulution ${
+            resul3 == undefined
+              ? "has some logical issues."
+              : "said that we should call our parents."
+          }`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "callParents",
+        "this._callParents()"
+      );
+      this.code_test_str = this.parseInsertVariableExistence(
+        "goToSupermarket",
+        "this._goToSupermarket()"
+      );
+      //have money is false and too far is true, so we need to call parents
+      haveMoney = false;
+      tooFar = true;
+      this.code_test_str = this.parseInsertVariableExistence(
+        "haveMoney",
+        haveMoney
+      );
+      let s4 = this.parseInsertVariableExistence("tooFar", tooFar);
+
+      //we need to call parents
+      challengeMsg =
+        "You should call your parents if you do not have money and the supermarket is too far.";
+      let resul4 = eval(s4);
+      if (resul4 == "parents_called") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg} Your soulution ${
+            resul4 == undefined
+              ? "has some logical issues."
+              : "said that we should go to the supermarket."
+          }`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+    }
+  }
+}
 
 class Challenge5Test extends Chapter1 {}
 
