@@ -1,0 +1,3 @@
+if(haveFood == false){
+    buyFood
+}
