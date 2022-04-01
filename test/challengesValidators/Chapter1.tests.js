@@ -1,7 +1,7 @@
 const d = require("./defaultTest");
 class Chapter1 extends d.defaultTest {
   //variables/functions available for this chapter only
-  _chapter_title = "Variables";
+  _chapter_title = "Chapter 1: Variables";
 
   constructor(challenge, code, bindings) {
     super(1, challenge, code, bindings);
