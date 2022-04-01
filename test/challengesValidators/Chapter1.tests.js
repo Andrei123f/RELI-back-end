@@ -149,7 +149,7 @@ class Challenge3Test extends Chapter1 {
     let varsAlreadyDeclared = false;
 
     let challengeMsg = "Variables buyFood and haveFood should not be defined.";
-    this.code_test_str =  this.parseDeclaredVariableExistence("buyFood");
+    this.code_test_str = this.parseDeclaredVariableExistence("buyFood");
     let s1 = this.parseDeclaredVariableExistence("haveFood");
     //buyFood and haveFood should be undefined
     try {
@@ -393,7 +393,230 @@ class Challenge4Test extends Chapter1 {
   }
 }
 
-class Challenge5Test extends Chapter1 {}
+class Challenge5Test extends Chapter1 {
+  //variables/functions available for this challenge only
+  _challenge_title = "Final Challenge";
+
+  _supplier() {
+    return "supplier_called";
+  }
+
+  _bankRupt() {
+    return "bankrupt_gone";
+  }
+
+  _specialContract() {
+    return "special_contract_made";
+  }
+
+  //common functions
+  constructor(code, bindings) {
+    super(5, code, bindings);
+  }
+  setBindings() {
+    Object.keys(this.bindings).forEach((key) => {
+      this[key] = this.bindings[key];
+    });
+  }
+
+  //common function, but customised tests
+  runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 5;
+    let varsAlreadyDeclared = false;
+
+    let sportsCarNumber;
+    let clientSports;
+
+    let challengeMsg =
+      "Variables sportsCarNumber, supplier, clientSports, specialContract and bankRupt should not be defined.";
+    this.code_test_str = this.parseDeclaredVariableExistence("sportsCarNumber");
+    this.code_test_str = this.parseDeclaredVariableExistence("supplier");
+    this.code_test_str = this.parseDeclaredVariableExistence("clientSports");
+    this.code_test_str = this.parseDeclaredVariableExistence("specialContract");
+    let s1 = this.parseDeclaredVariableExistence("bankRupt");
+    //sportsCarNumber, supplier, clientSports, specialContract and bankRupt should be undefined
+    try {
+      eval(s1);
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } catch (e) {
+      varsAlreadyDeclared = true;
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    //if vars are already declared there is no point in running the code to crash the server
+    if (!varsAlreadyDeclared) {
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "specialContract",
+        "this._specialContract()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "supplier",
+        "this._supplier()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "bankRupt",
+        "this._bankRupt()"
+      );
+
+      //have money is true and too far is true, so we need to call parents
+      sportsCarNumber = 0;
+      clientSports = 1;
+
+      this.sportsCarNumber = this.parseInsertVariableExistence(
+        "sportsCarNumber",
+        sportsCarNumber
+      );
+      let s2 = this.parseInsertVariableExistence("clientSports", clientSports);
+
+      //we should call our parents
+      challengeMsg =
+        "You should make a special contract if you do not have any sports car and you have one customer that wants to buy one.";
+      let result2 = eval(s2);
+      if (result2 == "special_contract_made") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg} Your soulution said that ${this.writeErrorLogical(
+            result2
+          )}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "specialContract",
+        "this._specialContract()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "supplier",
+        "this._supplier()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "bankRupt",
+        "this._bankRupt()"
+      );
+
+      //have money is true and too far is false, so we need go to the supermarket
+      sportsCarNumber = 0;
+      clientSports = 0;
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "sportsCarNumber",
+        sportsCarNumber
+      );
+      let s3 = this.parseInsertVariableExistence("clientSports", clientSports);
+      //we should go to the supermarket
+      challengeMsg =
+        "You should call the supplier if you do not have any sports car and no customrs wants to buy one.";
+      let result3 = eval(s3);
+      if (result3 == "supplier_called") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg} Your soulution said that ${this.writeErrorLogical(
+            result3
+          )}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "specialContract",
+        "this._specialContract()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "supplier",
+        "this._supplier()"
+      );
+
+      this.code_test_str = this.parseInsertVariableExistence(
+        "bankRupt",
+        "this._bankRupt()"
+      );
+      sportsCarNumber = 100;
+      clientSports = 0;
+      //have money is false and too far is true, so we need to call parents
+      this.code_test_str = this.parseInsertVariableExistence(
+        "sportsCarNumber",
+        sportsCarNumber
+      );
+      let s4 = this.parseInsertVariableExistence("clientSports", clientSports);
+
+      //we need to call parents
+      challengeMsg =
+        "You should go bankrupt if you have 100 sports cars and no client wants to buy one.";
+      let result4 = eval(s4);
+      if (result4 == "bankrupt_gone") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg} Your soulution said that ${this.writeErrorLogical(
+            result4
+          )}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      let s5 = this.parseReturnVariableExistence("currCarNumber");
+      s5 = `let sportsCarNumber, clientSports, specialContract, supplier, bankRupt; ${s5}`;
+      //havelove is true
+      let result5 = eval(s5);
+
+      challengeMsg = "You should 25 cars in your dealership right now.";
+      if (result5 == 25) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+    }
+  }
+
+  writeErrorLogical(actual) {
+    switch (actual) {
+      case undefined:
+        return "has some logical issues";
+      case "supplier_called":
+        return "we should call the supplier";
+      case "bankrupt_gone":
+        return "we should go bankrupt";
+      case "special_contract_made":
+        return "we should go make a special contract ";
+    }
+  }
+}
 
 module.exports = {
   Challenge1Test,
