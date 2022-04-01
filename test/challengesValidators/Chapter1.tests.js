@@ -490,7 +490,7 @@ class Challenge5Test extends Chapter1 {
         });
       } else {
         this.pushTestFailed({
-          msg: `${challengeMsg} Your soulution said that ${this.writeErrorLogical(
+          msg: `${challengeMsg} Your soulution ${this.writeErrorLogical(
             result2
           )}`,
           title: `${this._chapter_title}: ${this._challenge_title}`,
@@ -534,7 +534,7 @@ class Challenge5Test extends Chapter1 {
         });
       } else {
         this.pushTestFailed({
-          msg: `${challengeMsg} Your soulution said that ${this.writeErrorLogical(
+          msg: `${challengeMsg} Your soulution ${this.writeErrorLogical(
             result3
           )}`,
           title: `${this._chapter_title}: ${this._challenge_title}`,
@@ -577,7 +577,7 @@ class Challenge5Test extends Chapter1 {
         });
       } else {
         this.pushTestFailed({
-          msg: `${challengeMsg} Your soulution said that ${this.writeErrorLogical(
+          msg: `${challengeMsg} Your soulution ${this.writeErrorLogical(
             result4
           )}`,
           title: `${this._chapter_title}: ${this._challenge_title}`,
@@ -609,11 +609,11 @@ class Challenge5Test extends Chapter1 {
       case undefined:
         return "has some logical issues";
       case "supplier_called":
-        return "we should call the supplier";
+        return "said that we should call the supplier";
       case "bankrupt_gone":
-        return "we should go bankrupt";
+        return "said that we should go bankrupt";
       case "special_contract_made":
-        return "we should go make a special contract ";
+        return "said that we should go make a special contract ";
     }
   }
 }
