@@ -168,6 +168,18 @@ class Challenge2Test extends Chapter2 {
       }
     }
   }
+  writeErrorLogical(actual) {
+    switch (actual) {
+      case undefined:
+        return "has some logical issues";
+      case "busy":
+        return "said that you should be busy.";
+      case "lunch":
+        return "said that you should be in lunch break.";
+      case "done":
+        return "said that you should be done.";
+    }
+  }
 }
 
 class Challenge3Test extends Chapter2 {
