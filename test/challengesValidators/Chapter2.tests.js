@@ -34,6 +34,7 @@ class Challenge1Test extends Chapter2 {
       "availableFrom should be defined and should be a function.";
     let s = this.parseReturnFunctionExistence("availableFrom");
     //havelove is true
+    s = this.parseInfiniteLoopProtection(s);
     let result = eval(s);
 
     //check if the variable is defined
@@ -93,6 +94,7 @@ class Challenge2Test extends Chapter2 {
     let challengeMsg = "canCall should be defined and should be a function.";
     let s = this.parseReturnFunctionExistence("canCall");
     //havelove is true
+    s = this.parseInfiniteLoopProtection(s);
     let result = eval(s);
 
     //check if the variable is defined
@@ -209,6 +211,7 @@ class Challenge3Test extends Chapter2 {
     let challengeMsg = "canCall should be defined and should be a function.";
     let s = this.parseReturnFunctionExistence("canCall");
     //havelove is true
+    s = this.parseInfiniteLoopProtection(s);
     let result = eval(s);
 
     //check if the variable is defined
@@ -316,7 +319,39 @@ class Challenge3Test extends Chapter2 {
   }
 }
 
-class Challenge4Test extends Chapter2 {}
+class Challenge4Test extends Chapter2 {
+  _challenge_title = "For loop And While loop";
+
+  //common functions
+  constructor(code, bindings) {
+    super(4, code, bindings);
+  }
+  setBindings() {
+    Object.keys(this.bindings).forEach((key) => {
+      this[key] = this.bindings[key];
+    });
+  }
+
+  //common function, but customised tests
+  runTests() {
+      this.runUserCode(this.code);
+
+  }
+  writeErrorLogical(actual) {
+    switch (actual) {
+      case undefined:
+        return "has some logical issues";
+      case "busy":
+        return "said that you should be busy.";
+      case "lunch":
+        return "said that you should be in lunch break.";
+      case "done":
+        return "said that you should be done.";
+      case "talk":
+        return "said that you should be able to talk. ";
+    }
+  }
+}
 
 class Challenge5Test extends Chapter2 {}
 

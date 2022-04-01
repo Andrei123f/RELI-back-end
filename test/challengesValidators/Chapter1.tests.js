@@ -34,6 +34,7 @@ class Challenge1Test extends Chapter1 {
     let challengeMsg = "Variable money should be defined.";
     let s = this.parseReturnVariableExistence("money");
     //havelove is true
+    s = this.parseInfiniteLoopProtection(s);
     let result = eval(s);
 
     //check if the variable is defined
@@ -90,6 +91,7 @@ class Challenge2Test extends Chapter1 {
 
     let challengeMsg = "Variable apples should be defined.";
     let s = this.parseReturnVariableExistence("apples");
+    s = this.parseInfiniteLoopProtection(s);
     //havelove is true
     let result = eval(s);
 
@@ -151,6 +153,7 @@ class Challenge3Test extends Chapter1 {
     let challengeMsg = "Variables buyFood and haveFood should not be defined.";
     this.code_test_str = this.parseDeclaredVariableExistence("buyFood");
     let s1 = this.parseDeclaredVariableExistence("haveFood");
+    s1 = this.parseInfiniteLoopProtection(s1);
     //buyFood and haveFood should be undefined
     try {
       eval(s1);
@@ -178,6 +181,7 @@ class Challenge3Test extends Chapter1 {
       let s2 = this.parseInsertVariableExistence("haveFood", haveFood);
       //buyFood should be true
       challengeMsg = "You should not buy food if you have food.";
+      s2 = this.parseInfiniteLoopProtection(s2);
       let result2 = eval(s2);
       if (result2 == undefined) {
         this.pushTestPassed({
@@ -202,6 +206,7 @@ class Challenge3Test extends Chapter1 {
 
       //buyFood should be true
       challengeMsg = "You should buy food if you do not have food.";
+      s3 = this.parseInfiniteLoopProtection(s3);
       let resul3 = eval(s3);
       if (resul3 == true) {
         this.pushTestPassed({
@@ -254,6 +259,7 @@ class Challenge4Test extends Chapter1 {
     this.code_test_str = this.parseDeclaredVariableExistence("haveMoney");
     this.code_test_str = this.parseDeclaredVariableExistence("callParents");
     let s1 = this.parseDeclaredVariableExistence("goToSupermarket");
+    s1 = this.parseInfiniteLoopProtection(s1);
     //haveMoney, tooFar, callParents and goToSupermarket should be undefined
     try {
       eval(s1);
@@ -295,6 +301,7 @@ class Challenge4Test extends Chapter1 {
       //we should call our parents
       challengeMsg =
         "You should call your parents if you have money and the supermarket is too far.";
+      s2 = this.parseInfiniteLoopProtection(s2);
       let result2 = eval(s2);
       if (result2 == "parents_called") {
         this.pushTestPassed({
@@ -334,6 +341,8 @@ class Challenge4Test extends Chapter1 {
       //we should go to the supermarket
       challengeMsg =
         "You should go to the supermarket if you have money and the supermarket is not too far.";
+      s3 = this.parseInfiniteLoopProtection(s3);
+
       let resul3 = eval(s3);
       if (resul3 == "supermarket_gone") {
         this.pushTestPassed({
@@ -373,6 +382,8 @@ class Challenge4Test extends Chapter1 {
       //we need to call parents
       challengeMsg =
         "You should call your parents if you do not have money and the supermarket is too far.";
+      s4 = this.parseInfiniteLoopProtection(s4);
+
       let resul4 = eval(s4);
       if (resul4 == "parents_called") {
         this.pushTestPassed({
@@ -435,6 +446,8 @@ class Challenge5Test extends Chapter1 {
     this.code_test_str = this.parseDeclaredVariableExistence("clientSports");
     this.code_test_str = this.parseDeclaredVariableExistence("specialContract");
     let s1 = this.parseDeclaredVariableExistence("bankRupt");
+    s1 = this.parseInfiniteLoopProtection(s1);
+
     //sportsCarNumber, supplier, clientSports, specialContract and bankRupt should be undefined
     try {
       eval(s1);
@@ -482,6 +495,8 @@ class Challenge5Test extends Chapter1 {
       //we should call our parents
       challengeMsg =
         "You should make a special contract if you do not have any sports car and you have one customer that wants to buy one.";
+      s2 = this.parseInfiniteLoopProtection(s2);
+
       let result2 = eval(s2);
       if (result2 == "special_contract_made") {
         this.pushTestPassed({
@@ -526,6 +541,8 @@ class Challenge5Test extends Chapter1 {
       //we should go to the supermarket
       challengeMsg =
         "You should call the supplier if you do not have any sports car and no customrs wants to buy one.";
+
+      s3 = this.parseInfiniteLoopProtection(s3);
       let result3 = eval(s3);
       if (result3 == "supplier_called") {
         this.pushTestPassed({
@@ -569,6 +586,8 @@ class Challenge5Test extends Chapter1 {
       //we need to call parents
       challengeMsg =
         "You should go bankrupt if you have 100 sports cars and no client wants to buy one.";
+      s4 = this.parseInfiniteLoopProtection(s4);
+
       let result4 = eval(s4);
       if (result4 == "bankrupt_gone") {
         this.pushTestPassed({
@@ -587,6 +606,7 @@ class Challenge5Test extends Chapter1 {
       let s5 = this.parseReturnVariableExistence("currCarNumber");
       s5 = `let sportsCarNumber, clientSports, specialContract, supplier, bankRupt; ${s5}`;
       //havelove is true
+      s5 = this.parseInfiniteLoopProtection(s5);
       let result5 = eval(s5);
 
       challengeMsg = "You should 25 cars in your dealership right now.";

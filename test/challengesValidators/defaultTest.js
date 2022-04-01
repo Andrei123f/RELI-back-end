@@ -1,3 +1,11 @@
+const protect = require("loop-protect");
+const Babel = require("babel-standalone");
+Babel.registerPlugin("loopProtection", protect(1000)); //default to 1 second
+const transform = (source) =>
+  Babel.transform(source, {
+    plugins: ["loopProtection"],
+  }).code;
+
 class defaultTest {
   chapter = "";
   challenge = null;
@@ -24,6 +32,11 @@ class defaultTest {
       return;
     }
     this.percPass = (this.testsPassedN / this.testsN) * 100;
+  }
+
+  //function to run safely the eval
+  parseInfiniteLoopProtection(code) {
+    return transform(code);
   }
 
   //e: {msg: '', title: ''}
