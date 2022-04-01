@@ -371,9 +371,6 @@ class Challenge4Test extends Chapter2 {
       //now set the bindings
       this.code_test_str = "";
       startingAltitude = 0;
-
-      //now set the bindings
-      this.code_test_str = "";
       this.code_test_str = this.parseInsertVariableExistence(
         "startingAltitude",
         startingAltitude
@@ -381,9 +378,8 @@ class Challenge4Test extends Chapter2 {
       let s2 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`
       s2 = this.parseInfiniteLoopProtection(s2);
       challengeMsg = "Speed has the expected value.";
+      
       eval(s2);
-      console.log(s2);
-      console.log(this._currSpeed);
       if (this._currSpeed == 70) {
         this.pushTestPassed({
           msg: `${challengeMsg}`,
@@ -395,20 +391,6 @@ class Challenge4Test extends Chapter2 {
           title: `${this._chapter_title}: ${this._challenge_title}`,
         });
       }
-    }
-  }
-  writeErrorLogical(actual) {
-    switch (actual) {
-      case undefined:
-        return "has some logical issues";
-      case "busy":
-        return "said that you should be busy.";
-      case "lunch":
-        return "said that you should be in lunch break.";
-      case "done":
-        return "said that you should be done.";
-      case "talk":
-        return "said that you should be able to talk. ";
     }
   }
 }
