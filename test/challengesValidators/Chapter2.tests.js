@@ -326,6 +326,13 @@ class Challenge4Test extends Chapter2 {
   constructor(code, bindings) {
     super(4, code, bindings);
   }
+
+  _currSpeed = 0;
+
+  _speed(increase) {
+    this._currSpeed += increase;
+  }
+
   setBindings() {
     Object.keys(this.bindings).forEach((key) => {
       this[key] = this.bindings[key];
@@ -334,8 +341,61 @@ class Challenge4Test extends Chapter2 {
 
   //common function, but customised tests
   runTests() {
-      this.runUserCode(this.code);
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 2;
+    let varsAlreadyDeclared = false;
+    let startingAltitude;
 
+    let challengeMsg =
+      "Variables startingAltitude and speed should not be defined.";
+    this.code_test_str =
+      this.parseDeclaredVariableExistence("startingAltitude");
+    let s1 = this.parseDeclaredVariableExistence("speed");
+    s1 = this.parseInfiniteLoopProtection(s1);
+    //buyFood and haveFood should be undefined
+    try {
+      eval(s1);
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } catch (e) {
+      varsAlreadyDeclared = true;
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    if (!varsAlreadyDeclared) {
+      //now set the bindings
+      this.code_test_str = "";
+      startingAltitude = 0;
+
+      //now set the bindings
+      this.code_test_str = "";
+      this.code_test_str = this.parseInsertVariableExistence(
+        "startingAltitude",
+        startingAltitude
+      );
+      let s2 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`
+      s2 = this.parseInfiniteLoopProtection(s2);
+      challengeMsg = "Speed has the expected value.";
+      eval(s2);
+      console.log(s2);
+      console.log(this._currSpeed);
+      if (this._currSpeed == 70) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+    }
   }
   writeErrorLogical(actual) {
     switch (actual) {
