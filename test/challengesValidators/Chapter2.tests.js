@@ -375,10 +375,10 @@ class Challenge4Test extends Chapter2 {
         "startingAltitude",
         startingAltitude
       );
-      let s2 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`
+      let s2 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`;
       s2 = this.parseInfiniteLoopProtection(s2);
       challengeMsg = "Speed has the expected value.";
-      
+
       eval(s2);
       if (this._currSpeed == 70) {
         this.pushTestPassed({
@@ -395,7 +395,138 @@ class Challenge4Test extends Chapter2 {
   }
 }
 
-class Challenge5Test extends Chapter2 {}
+class Challenge5Test extends Chapter2 {
+  syntaxValidator = require("esprima");
+  _challenge_title = "Final Challenge";
+
+  //common functions
+  constructor(code, bindings) {
+    super(4, code, bindings);
+  }
+
+  _currSpeed = 0;
+
+  _param_number = 0;
+
+  _speed(increase) {
+    this._currSpeed += increase;
+  }
+
+  _setNumbOfParams(f) {
+    this._param_number = f.length;
+  }
+
+  setBindings() {
+    Object.keys(this.bindings).forEach((key) => {
+      this[key] = this.bindings[key];
+    });
+  }
+
+  //common function, but customised tests
+  runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 5;
+    let varsAlreadyDeclared = false;
+    let correctNumberOfParameters = false;
+    let time;
+    let isFunction = false;
+
+    let challengeMsg = "Variables speed should not be defined.";
+    let s1 = this.parseDeclaredVariableExistence("speed");
+    s1 = this.parseInfiniteLoopProtection(s1);
+    //buyFood and haveFood should be undefined
+    try {
+      eval(s1);
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } catch (e) {
+      varsAlreadyDeclared = true;
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    challengeMsg = "takeOff should be defined and should be a function.";
+    let s2 = this.parseReturnFunctionExistence("takeOff");
+    //havelove is true
+    s2 = this.parseInfiniteLoopProtection(s2);
+    let result = eval(s2);
+
+    //check if the variable is defined
+    if (result === undefined) {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } else {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      isFunction = true;
+    }
+
+    if (isFunction) {
+      challengeMsg = "takeOff should have 1 parameter";
+      let s3 = `${s1} this._setNumbOfParams(takeOff)`;
+      eval(s3);
+      if (this._param_number == 1) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+        correctNumberOfParameters = true;
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+      if (correctNumberOfParameters && !varsAlreadyDeclared) {
+        time = 10;
+        //now run the usual tests.
+        challengeMsg =
+          "At any other time rather than 19 there should be plane checks.";
+        let s4 = `function test(){${s1}; return takeOff(${time})} test();`;
+        let result4 = eval(s4);
+        if (result4 == "plane_checks") {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        //now bind the functions
+        this.code_test_str = "";
+        time = 19;
+        let s5 = `function test(){${this.code} return takeOff(${time})}; test();`;
+        s5 = `let speed = (i) => this._speed(i);  ${s5}`;
+        s5 = this.parseInfiniteLoopProtection(s5);
+        eval(s5);
+        challengeMsg = "Speed has the expected value.";
+        if (this._currSpeed == 90) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+      }
+    }
+  }
+}
 
 module.exports = {
   Challenge1Test,
