@@ -262,7 +262,86 @@ class Challenge4Test extends Chapter2 {
   }
 
   //common function, but customised tests
-  runTests() {}
+  runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 3;
+    let config = {
+      motherboard: "",
+      hard_disk: "",
+      changeMotherBoard(value) {
+        this.motherboard = value;
+      },
+      changeHardDisk(value) {
+        this.hard_disk = value;
+      },
+    };
+    let initialProps = [
+      "motherboard",
+      "hard_disk",
+      "changeMotherBoard",
+      "changeHardDisk",
+    ];
+    let hasAllInitialProps = true;
+    let notDefined = false;
+
+    //binding the class variables to the function variables so we can test
+    let challengeMsg = "Object config should not be defined.";
+    let s1 = this.parseReturnObjectExistence("config", config);
+    s1 = this.parseInfiniteLoopProtection(s1);
+
+    try {
+      eval(s1);
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      notDefined = true;
+    } catch (e) {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+    if (notDefined) {
+      for (const inPropId in initialProps) {
+        const inProp = initialProps[inPropId];
+        if (!(inProp in config)) {
+          hasAllInitialProps = false;
+          break;
+        }
+      }
+
+      challengeMsg = "Object config should not have new properties.";
+      config = eval(s1);
+      if (
+        hasAllInitialProps &&
+        Object.keys(config).length == initialProps.length
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      challengeMsg = "Object config should have the expected values.";
+      if (config.motherboard == "asus" && config.hard_disk == "samsung") {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+    }
+  }
 }
 
 class Challenge5Test extends Chapter2 {

@@ -83,7 +83,7 @@ class defaultTest {
   parseReturnObjectExistence(var_name) {
     return `function test(){${this.code}; return typeof ${var_name} == 'object' ? ${var_name} : undefined;} test();`;
   }
-  
+
   //this checks if the code does not declare a variable that we do not want to be declared
   parseDeclaredVariableExistence(var_name) {
     if (this.code_test_str == "") {
@@ -105,6 +105,14 @@ class defaultTest {
       this.code_test_str = this.code;
     }
     return `let ${var_name} = [${var_bind}]; ${this.code_test_str}`;
+  }
+
+  //this inserts the object into the code
+  parseInsertObjectExistence(var_name, var_bind) {
+    if (this.code_test_str == "") {
+      this.code_test_str = this.code;
+    }
+    return `let ${var_name} = ${var_bind}; ${this.code_test_str}`;
   }
 }
 module.exports = {
