@@ -396,12 +396,11 @@ class Challenge4Test extends Chapter2 {
 }
 
 class Challenge5Test extends Chapter2 {
-  syntaxValidator = require("esprima");
   _challenge_title = "Final Challenge";
 
   //common functions
   constructor(code, bindings) {
-    super(4, code, bindings);
+    super(5, code, bindings);
   }
 
   _currSpeed = 0;
