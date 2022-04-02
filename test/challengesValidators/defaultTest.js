@@ -93,6 +93,14 @@ class defaultTest {
     }
     return `let ${var_name} = ${var_bind}; ${this.code_test_str}`;
   }
+
+  //this inserts the variables into the code
+  parseInsertArrayExistence(var_name, var_bind) {
+    if (this.code_test_str == "") {
+      this.code_test_str = this.code;
+    }
+    return `let ${var_name} = [${var_bind}]; ${this.code_test_str}`;
+  }
 }
 module.exports = {
   defaultTest,
