@@ -73,6 +73,12 @@ class defaultTest {
   parseReturnFunctionExistence(var_name) {
     return `function test(){${this.code}; return typeof ${var_name} == 'function' ? ${var_name} : undefined;} test();`;
   }
+
+  //this checks if the code actually defines an array
+  parseReturnArrayExistence(var_name) {
+    return `function test(){${this.code}; return Array.isArray(${var_name}) ? ${var_name} : undefined;} test();`;
+  }
+
   //this checks if the code does not declare a variable that we do not want to be declared
   parseDeclaredVariableExistence(var_name) {
     if (this.code_test_str == "") {
