@@ -351,8 +351,144 @@ class Challenge5Test extends Chapter2 {
   constructor(code, bindings) {
     super(5, code, bindings);
   }
+
+  setBindings() {
+    Object.keys(this.bindings).forEach((key) => {
+      this[key] = this.bindings[key];
+    });
+  }
+
   //common function, but customised tests
-  runTests() {}
+  runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 6;
+    let isArray = false;
+    let expectedFieldsMomGift = ["camera", "gift_for", "ram"];
+    let expectedFieldsDadGift = ["gift_for", "engine"];
+    let allValuesIncludedMom = true;
+    let allValuesIncludedDad = true;
+    let valuesAreObjects = true;
+
+    //binding the class variables to the function variables so we can test
+
+    let challengeMsg = "parentsGifts should be defined and should be an array.";
+    let s = this.parseReturnArrayExistence("parentsGifts");
+    //havelove is true
+    s = this.parseInfiniteLoopProtection(s);
+    let result = eval(s);
+
+    //check if the variable is defined
+    if (result === undefined) {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } else {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      isArray = true;
+    }
+    if (isArray) {
+      for (const giftArrId in result) {
+        const giftArr = result[giftArrId];
+        if (!(typeof giftArr == "object" && !Array.isArray(giftArr))) {
+          valuesAreObjects = false;
+        }
+      }
+
+      challengeMsg = "Both values of the parentsGifts array should be objects.";
+      if (valuesAreObjects) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      if (valuesAreObjects) {
+        const momObjGift = result[0];
+        const dadObjGift = result[1];
+
+        for (const eId in expectedFieldsMomGift) {
+          const expectedValue = expectedFieldsMomGift[eId];
+          if (!expectedValue in momObjGift) {
+            allValuesIncludedMom = false;
+          }
+        }
+
+        for (const eId in expectedFieldsDadGift) {
+          const expectedValue = expectedFieldsDadGift[eId];
+          if (!expectedValue in dadObjGift) {
+            allValuesIncludedDad = false;
+          }
+        }
+
+        challengeMsg = "Dad gift object should have the required properties";
+        if (allValuesIncludedDad) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        challengeMsg = "Mom gift object should have the required properties";
+        if (allValuesIncludedMom) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        challengeMsg =
+          "Mom gift object properties values should be the expected ones.";
+        if (
+          momObjGift.camera == 12 &&
+          momObjGift.ram == 8 &&
+          momObjGift.gift_for == "mom"
+        ) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        challengeMsg =
+          "Dad gift object properties values should be the expected ones.";
+        if (dadObjGift.engine == 125 && dadObjGift.gift_for == "dad") {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+      }
+    }
+  }
 }
 
 module.exports = {

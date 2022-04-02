@@ -81,7 +81,7 @@ class defaultTest {
 
   //this checks if the code actually defines an object
   parseReturnObjectExistence(var_name) {
-    return `function test(){${this.code}; return typeof ${var_name} == 'object' ? ${var_name} : undefined;} test();`;
+    return `function test(){${this.code}; return typeof ${var_name} == 'object' && (!Array.isArray(${var_name})) ? ${var_name} : undefined;} test();`;
   }
 
   //this checks if the code does not declare a variable that we do not want to be declared
