@@ -175,7 +175,76 @@ class Challenge3Test extends Chapter2 {
   }
 
   //common function, but customised tests
-  runTests() {}
+  runTests() {
+    //number of tests - used for deciding the percentage of correctness
+    this.testsN = 3;
+    let isObject = false;
+    let expectedProps = ["gpu", "cpu", "ram"];
+    let allPropsIncluded = true;
+
+    //binding the class variables to the function variables so we can test
+
+    let challengeMsg = "config should be defined and should be an object.";
+    let s = this.parseReturnObjectExistence("config");
+    //havelove is true
+    s = this.parseInfiniteLoopProtection(s);
+    let result = eval(s);
+
+    //check if the variable is defined
+    if (result === undefined) {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    } else {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      isObject = true;
+    }
+    if (isObject) {
+      challengeMsg = "The config should have all the expected properties.";
+
+      for (const expPropId in expectedProps) {
+        const expectedProp = expectedProps[expPropId];
+        if (!(expectedProp in result)) {
+          allPropsIncluded = false;
+        }
+      }
+
+      if (allPropsIncluded) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      challengeMsg =
+        "The config properties should have all the expected values.";
+
+      if (
+        result.gpu == "gtx" &&
+        result.cpu == "intel" &&
+        result.ram == "corsair"
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+    }
+  }
 }
 
 class Challenge4Test extends Chapter2 {
