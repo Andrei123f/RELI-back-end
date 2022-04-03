@@ -360,6 +360,8 @@ class Challenge4Test extends Chapter2 {
         title: `${this._chapter_title}: ${this._challenge_title}`,
       });
     } catch (e) {
+      console.log(e);
+      console.log(s1);
       varsAlreadyDeclared = true;
       this.pushTestFailed({
         msg: `${challengeMsg}`,
