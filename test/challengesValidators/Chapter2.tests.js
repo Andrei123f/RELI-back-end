@@ -491,7 +491,7 @@ class Challenge5Test extends Chapter2 {
         //now run the usual tests.
         challengeMsg =
           "At any other time rather than 19 there should be plane checks.";
-        let s4 = `function test(){let speed = (i) => this._speed(i);  ${this.code}}; return takeOff(${time})} test();`;
+        let s4 = `function test(){let speed = (i) => this._speed(i);  ${this.code}; return takeOff(${time})} test();`;
         console.log(s4);
         let result4 = eval(s4);
         if (result4 == "plane_checks") {
