@@ -471,7 +471,7 @@ class Challenge5Test extends Chapter2 {
 
     if (isFunction) {
       challengeMsg = "takeOff should have 1 parameter";
-      let s3 = `${s1} this._setNumbOfParams(takeOff)`;
+      let s3 = `let speed = (i) => this._speed(i);  ${this.code} this._setNumbOfParams(takeOff)`;
       console.log(s3);
       eval(s3);
       if (this._param_number == 1) {
@@ -491,7 +491,8 @@ class Challenge5Test extends Chapter2 {
         //now run the usual tests.
         challengeMsg =
           "At any other time rather than 19 there should be plane checks.";
-        let s4 = `function test(){${s1}; return takeOff(${time})} test();`;
+        let s4 = `function test(){let speed = (i) => this._speed(i);  ${this.code}}; return takeOff(${time})} test();`;
+        console.log(s4);
         let result4 = eval(s4);
         if (result4 == "plane_checks") {
           this.pushTestPassed({
@@ -510,6 +511,7 @@ class Challenge5Test extends Chapter2 {
         this.code_test_str = "";
         time = 19;
         let s5 = `function test(){${this.code} return takeOff(${time})}; test();`;
+        console.log(s5);
         s5 = `let speed = (i) => this._speed(i);  ${s5}`;
         s5 = this.parseInfiniteLoopProtection(s5);
         eval(s5);
