@@ -431,7 +431,7 @@ class Challenge5Test extends Chapter2 {
     let time;
     let isFunction = false;
 
-    let challengeMsg = "Variables speed should not be defined.";
+    let challengeMsg = "Variable speed should not be defined.";
     let s1 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`;
     s1 = this.parseInfiniteLoopProtection(s1);
     //buyFood and haveFood should be undefined
@@ -453,6 +453,7 @@ class Challenge5Test extends Chapter2 {
     let s2 = this.parseReturnFunctionExistence("takeOff");
     //havelove is true
     s2 = this.parseInfiniteLoopProtection(s2);
+    console.log(s2);
     let result = eval(s2);
 
     //check if the variable is defined
