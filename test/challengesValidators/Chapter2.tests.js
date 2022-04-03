@@ -455,6 +455,7 @@ class Challenge5Test extends Chapter2 {
     s2 = this.parseInfiniteLoopProtection(s2);
     console.log(s2);
     let result = eval(s2);
+    console.log("TESTESTESTESTESTEST");
 
     //check if the variable is defined
     if (result === undefined) {
