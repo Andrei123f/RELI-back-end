@@ -75,7 +75,7 @@ class Challenge1Test extends Chapter4 {
       }
 
       challengeMsg =
-        "Character should have the right values on its properties.";
+        "Character should have the expected values on its properties.";
       if (result2 && result2.health_bar == 100 && result2.weapon == "sword") {
         this.pushTestPassed({
           msg: `${challengeMsg}`,
@@ -110,6 +110,134 @@ class Challenge2Test extends Chapter4 {
   runTests() {
     //number of tests - used for deciding the percentage of correctness
     this.testsN = 3;
+    let isClass = false;
+
+    //binding the class variables to the function variables so we can test
+    let s = `function test(){${this.code}; return ${this.isClass_str(
+      "Character"
+    )}}; test();`;
+    s = this.parseInfiniteLoopProtection(s);
+
+    let challengeMsg = "Character should be defined and should be a Class.";
+    let result = eval(s);
+    if (result) {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      isClass = true;
+    } else {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+    if (isClass) {
+      challengeMsg =
+        "character1 and character2 should be defined and should be objects instantiated from the Character Class.";
+
+      let s2 = `function test(){${this.code}; return  character1 && character2 && character1 instanceof Character && character2 instanceof Character}; test();`;
+      s2 = this.parseInfiniteLoopProtection(s2);
+      let result2 = eval(s2);
+      if (result2) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+        isClass = true;
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+      let s3 = `function test(){${this.code}; return character1;}test()`;
+      challengeMsg = "character1 should have the expected properties.";
+      s3 = this.parseInfiniteLoopProtection(s3);
+      let result3 = eval(s3);
+      if (
+        result3 &&
+        "health_bar" in result3 &&
+        "weapon" in result3 &&
+        "name" in result3
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      challengeMsg =
+        "character1 should have the expected properties with the expected values.";
+      if (
+        result3 &&
+        "health_bar" in result3 &&
+        "weapon" in result3 &&
+        "name" in result3 &&
+        result3.health_bar == 100 &&
+        result3.weapon == "sword" &&
+        result3.name == "Robert"
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      let s4 = `function test(){${this.code}; return character2;}test()`;
+      challengeMsg = "character2 should have the expected properties.";
+      s4 = this.parseInfiniteLoopProtection(s4);
+      let result4 = eval(s4);
+
+      if (
+        result4 &&
+        "health_bar" in result4 &&
+        "weapon" in result4 &&
+        "name" in result4
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      challengeMsg =
+        "character2 should have the expected properties with the expected values.";
+      if (
+        result4 &&
+        "health_bar" in result4 &&
+        "weapon" in result4 &&
+        "name" in result4 &&
+        result4.health_bar == 100 &&
+        result4.weapon == "sword" &&
+        result4.name == "Andrei"
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+    }
   }
 }
 
