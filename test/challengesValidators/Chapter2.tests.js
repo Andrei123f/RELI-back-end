@@ -453,9 +453,7 @@ class Challenge5Test extends Chapter2 {
     let s2 = this.parseReturnFunctionExistence("takeOff");
     //havelove is true
     s2 = this.parseInfiniteLoopProtection(s2);
-    console.log(s2);
     let result = eval(s2);
-    console.log("TESTESTESTESTESTEST");
 
     //check if the variable is defined
     if (result === undefined) {
@@ -474,6 +472,7 @@ class Challenge5Test extends Chapter2 {
     if (isFunction) {
       challengeMsg = "takeOff should have 1 parameter";
       let s3 = `${s1} this._setNumbOfParams(takeOff)`;
+      console.log(s3);
       eval(s3);
       if (this._param_number == 1) {
         this.pushTestPassed({
