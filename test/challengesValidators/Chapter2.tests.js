@@ -350,7 +350,7 @@ class Challenge4Test extends Chapter2 {
       "Variables startingAltitude and speed should not be defined.";
     this.code_test_str =
       this.parseDeclaredVariableExistence("startingAltitude");
-    let s1 = this.parseDeclaredVariableExistence("speed");
+    let s1 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`;
     s1 = this.parseInfiniteLoopProtection(s1);
     //buyFood and haveFood should be undefined
     try {
@@ -433,7 +433,7 @@ class Challenge5Test extends Chapter2 {
     let isFunction = false;
 
     let challengeMsg = "Variables speed should not be defined.";
-    let s1 = this.parseDeclaredVariableExistence("speed");
+    let s1 = `let speed = (i) => this._speed(i);  ${this.code_test_str}`;
     s1 = this.parseInfiniteLoopProtection(s1);
     //buyFood and haveFood should be undefined
     try {
