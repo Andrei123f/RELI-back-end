@@ -360,8 +360,6 @@ class Challenge4Test extends Chapter2 {
         title: `${this._chapter_title}: ${this._challenge_title}`,
       });
     } catch (e) {
-      console.log(e);
-      console.log(s1);
       varsAlreadyDeclared = true;
       this.pushTestFailed({
         msg: `${challengeMsg}`,
@@ -370,6 +368,7 @@ class Challenge4Test extends Chapter2 {
     }
 
     if (!varsAlreadyDeclared) {
+      this._currSpeed = 0;
       //now set the bindings
       this.code_test_str = "";
       startingAltitude = 0;
@@ -506,6 +505,7 @@ class Challenge5Test extends Chapter2 {
         }
 
         //now bind the functions
+        this._currSpeed = 0;
         this.code_test_str = "";
         time = 19;
         let s5 = `function test(){${this.code} return takeOff(${time})}; test();`;
