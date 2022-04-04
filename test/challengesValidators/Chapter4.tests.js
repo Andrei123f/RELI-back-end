@@ -958,8 +958,6 @@ class Challenge5Test extends Chapter4 {
         challengeMsg =
           "The warrior should be defined and should be instantiated from the Warrior Class.";
         let result15 = eval(s15);
-        console.log(result15);
-        console.log(s15);
         if (result15) {
           this.pushTestPassed({
             msg: `${challengeMsg}`,
