@@ -421,7 +421,7 @@ async function getChallengeById(req, res) {
     }
 
     const chapter_id = req.body.chapter_code;
-    const challenge_id = req.body.chapter_code;
+    const challenge_id = req.body.challenge_code;
 
     const chaptersData = await challengeServices.getChaptersByUsername(user);
 
