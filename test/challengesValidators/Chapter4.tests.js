@@ -414,7 +414,7 @@ class Challenge4Test extends Chapter4 {
   //common function, but customised tests
   runTests() {
     //number of tests - used for deciding the percentage of correctness
-    this.testsN = 11;
+    this.testsN = 15;
     let classHumanExists = false;
     let classWarriorExists = false;
     let classSoldierExists = false;
@@ -662,9 +662,317 @@ class Challenge5Test extends Chapter4 {
   }
 
   //common function, but customised tests
+  //common function, but customised tests
   runTests() {
     //number of tests - used for deciding the percentage of correctness
-    this.testsN = 6;
+    this.testsN = 15;
+    let classHumanExists = false;
+    let classWarriorExists = false;
+    let classSoldierExists = false;
+    let requiredPropsForWarriorExsits = false;
+    let requiredPropsForSoldierExsits = false;
+    let requiredPropsFoHumanExsits = false;
+
+    //check
+    //if class Human exists,
+    //class Warrior exists,
+    //class Soldier exists,
+    //binding the class variables to the function variables so we can test
+    let s = `function test(){${this.code}; return ${this.isClass_str(
+      "Human"
+    )}}; test();`;
+    s = this.parseInfiniteLoopProtection(s);
+    let challengeMsg = "Human should be defined and should be a Class.";
+    let result = eval(s);
+    if (result) {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      classHumanExists = true;
+    } else {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    //binding the class variables to the function variables so we can test
+    let s2 = `function test(){${this.code}; return ${this.isClass_str(
+      "Warrior"
+    )}}; test();`;
+    s = this.parseInfiniteLoopProtection(s);
+    challengeMsg = "Warrior should be defined and should be a Class.";
+    let result2 = eval(s2);
+    if (result2) {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      classWarriorExists = true;
+    } else {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    //binding the class variables to the function variables so we can test
+    let s3 = `function test(){${this.code}; return ${this.isClass_str(
+      "Soldier"
+    )}}; test();`;
+    s3 = this.parseInfiniteLoopProtection(s3);
+    challengeMsg = "Warrior should be defined and should be a Class.";
+    let result3 = eval(s3);
+    if (result3) {
+      this.pushTestPassed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+      classSoldierExists = true;
+    } else {
+      this.pushTestFailed({
+        msg: `${challengeMsg}`,
+        title: `${this._chapter_title}: ${this._challenge_title}`,
+      });
+    }
+
+    if (classWarriorExists && classHumanExists && classSoldierExists) {
+      //class Warrior extends Human
+      //class Soldier extends Human
+      let s4 = `function test(){${this.code}; return Warrior.prototype instanceof Human}test();`;
+      s4 = this.parseInfiniteLoopProtection(s4);
+      challengeMsg = "Class Warrior should extend the Human Class.";
+      let result4 = eval(s4);
+      if (result4) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      let s5 = `function test(){${this.code}; return Soldier.prototype instanceof Human}test();`;
+      s5 = this.parseInfiniteLoopProtection(s5);
+      challengeMsg = "Class Soldier should extend the Human Class.";
+      let result5 = eval(s5);
+      if (result5) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      //a warrior has all the required properties
+      // a soldier has all the required properties
+      //a human has all the required properties
+
+      let s6 = `function test(){${this.code}; return new Warrior();}test();`;
+      s6 = this.parseInfiniteLoopProtection(s6);
+      challengeMsg =
+        "A warrior object should have all the required properties.";
+      let result6 = eval(s6);
+      if (
+        result6 &&
+        "health_bar" in result6 &&
+        "weapon" in result6 &&
+        "setHp" in result6
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+        requiredPropsForWarriorExsits = true;
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      let s7 = `function test(){${this.code}; return new Soldier();}test();`;
+      s7 = this.parseInfiniteLoopProtection(s7);
+      challengeMsg =
+        "A soldier object should have all the required properties.";
+      let result7 = eval(s7);
+      if (
+        result7 &&
+        "health_bar" in result7 &&
+        "weapon" in result7 &&
+        "setHp" in result7
+      ) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+        requiredPropsForSoldierExsits = true;
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      let s8 = `function test(){${this.code}; return new Human();}test();`;
+      s8 = this.parseInfiniteLoopProtection(s8);
+      challengeMsg =
+        "A soldier object should have all the required properties.";
+      let result8 = eval(s8);
+      if (result8 && "health_bar" in result8) {
+        this.pushTestPassed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+        requiredPropsFoHumanExsits = true;
+      } else {
+        this.pushTestFailed({
+          msg: `${challengeMsg}`,
+          title: `${this._chapter_title}: ${this._challenge_title}`,
+        });
+      }
+
+      if (
+        requiredPropsFoHumanExsits &&
+        requiredPropsForSoldierExsits &&
+        requiredPropsForWarriorExsits
+      ) {
+        //a warrior has all the required properties with the right values
+        // a soldier has all the required properties with the right values
+        //a human has all the required properties with the right values
+
+        let s9 = `function test(){${this.code}; return new Warrior();}test();`;
+        s9 = this.parseInfiniteLoopProtection(s9);
+        challengeMsg =
+          "A warrior object should have all the required properties with the right values.";
+        let result9 = eval(s9);
+        if (result9 && result9.health_bar == 100 && result9.weapon == "axe") {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        let s10 = `function test(){${this.code}; return new Soldier();}test();`;
+        s10 = this.parseInfiniteLoopProtection(s10);
+        challengeMsg =
+          "A soldier object should have all the required properties with the right values.";
+        let result10 = eval(s10);
+        if (
+          result10 &&
+          result10.health_bar == 100 &&
+          result10.weapon == "sword"
+        ) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        let s11 = `function test(){${this.code}; return new Human();}test();`;
+        s11 = this.parseInfiniteLoopProtection(s11);
+        challengeMsg =
+          "A human object should have all the required properties with the right values.";
+        let result11 = eval(s11);
+        if (result11 && result10.health_bar == 100) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        let s12 = `function test(){${this.code}; return warrior;} test()`;
+        s12 = this.parseInfiniteLoopProtection(s12);
+        challengeMsg = "The warrior should have the correct hp value.";
+        let result12 = eval(s12);
+        if (result12 && result12.health_bar == 0) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        let s13 = `function test(){${this.code}; return soldier;} test()`;
+        s13 = this.parseInfiniteLoopProtection(s13);
+        challengeMsg = "The soldier should have the correct hp value.";
+        let result13 = eval(s13);
+        if (result13 && result13.health_bar == 30) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        let s14 = `function test(){${this.code}; return soldier && soldier instanceof  Soldier ? soldier : undefined;} test()`;
+        s14 = this.parseInfiniteLoopProtection(s14);
+        challengeMsg =
+          "The soldier should be defined and should be instantiated from the Soldier Class.";
+        let result14 = eval(s14);
+        if (result14) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+
+        let s15 = `function test(){${this.code}; return warrior && warrior instanceof Warrior ? warrior : undefined;} test()`;
+        s15 = this.parseInfiniteLoopProtection(s15);
+        challengeMsg =
+          "The warrior should be defined and should be instantiated from the Warrior Class.";
+        let result15 = eval(s15);
+        console.log(result15);
+        console.log(s15);
+        if (result15) {
+          this.pushTestPassed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        } else {
+          this.pushTestFailed({
+            msg: `${challengeMsg}`,
+            title: `${this._chapter_title}: ${this._challenge_title}`,
+          });
+        }
+      }
+    }
   }
 }
 
