@@ -51,12 +51,10 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 This is the API for the <a href="https://github.com/Andrei123f/RELI-Front-end">RenderLingo Portal</a>. The API is responsible with the user auth, user account creation and challenge evaluation/retrieval. <br />
-The project uses <a href="https://oauth.net/2/"><img src="https://oauth.net/images/oauth-2-sm.png" width=20 height=20>OAuth 2.0</a> flow for the user authentication.
+The project uses <a href="https://oauth.net/2/"><img src="https://oauth.net/images/oauth-2-sm.png" width=20 height=20>OAuth 2.0</a> flow for the user authentication and <a href="https://www.mongodb.com/"><img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/mongodb_original_logo_icon_146424.png" width=20 height=20>MongoDB</a> for data storing.
 
 
 ### How Does RenderLingo work
